@@ -1,0 +1,33 @@
+#!/bin/bash
+### trigger by 99-com.rules (new bluetooth connection), Redirect the bluetooth source to a pulseadio sink
+OUTPUT_SINK="alsa_output.0.analog-stereo"
+
+BT_MAC=$(echo "$NAME" | sed 's/:/_/g' | sed 's/\"//g')
+
+function checkSource {
+        local _sources=$(pi -c "pactl list sources short")
+
+        if [[ "$_sources" =~ RUNIING ]]; then
+                return
+        fi
+
+        if [[ ! "$_sources" =~ "$1" ]] ; then
+                return
+        fi
+
+        echo "$1"
+}
+
+function connect {
+        pi -c 'pactl load-module module-loopback source="$1" sink="$OUTPUT_SINK" rate=44100 adjust_time=0'
+        pi -c "pacmd set-sink-volume 0 65537"
+        pi -c "amixer set Master 100%"
+}
+
+if [ "$ACTION" = "add" ]
+then
+        incoming=bluez_source."$BT_MAC"
+        if [ ! -z $(checkSource "$incoming") ] ; then
+                connect "$incoming"
+        fi
+fi

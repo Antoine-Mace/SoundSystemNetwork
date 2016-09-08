@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<ices>
+    <background>0</background>
+    <logpath>/var/log/ices</logpath>
+    <logfile>ices.log</logfile>
+    <logsize>2048</logsize>
+    <loglevel>4</loglevel>
+    <consolelog>0</consolelog>
+
+    <stream>
+        <metadata>
+            <name>Sound System Network</name>
+            <genre>multi</genre>
+            <description>Sound System Network - Antoine Mace University Of Kent</description>
+            <url>http://www.antoinemace.com</url>
+        </metadata>
+
+        <input>
+            <module>alsa</module>
+            <param name="rate">44100</param>
+            <param name="channels">2</param>
+            <!--    use pulseaudio output.  -->
+            <param name="device">pulse</param>
+            <param name="metadata">1</param>
+            <param name="metadatafilename">test</param>
+        </input>
+        
+        <instance>
+            <!--    hostname and port, icecast2 password and mount point.  -->
+            <hostname>localhost</hostname>
+            <port>8000</port>
+            <password>projectresearch</password>
+            <mount>/soundsystemnetowrk.ogg</mount>
+            <yp>0</yp>
+            <encode>
+                <quality>0</quality>
+                <samplerate>16000</samplerate>
+                <channels>1</channels>
+            </encode>
+            <!-- stereo-> mono downmixing -->
+            <downmix>1</downmix>
+            <!-- resample frequency (in Hz) -->
+            <resample>
+                <in-rate>44100</in-rate>
+                <out-rate>22050</out-rate>
+            </resample>
+        </instance>
+    </stream>
+</ices>
+
+
+
+
+
+
